@@ -1,4 +1,4 @@
-jQuery cssReader
+cssReader (jQuery Plugin)
 ================
 Author: ayecue
 
