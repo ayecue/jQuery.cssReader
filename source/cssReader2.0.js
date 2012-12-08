@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Plugin: cssReader
  * Version: 2.0
  *
@@ -18,44 +18,44 @@ var cssReader = function (options){
 			-> setUrl
 				@param : string
 				- Setzt targetUrl.
-			-> freeCompiledClass
-				- Löscht den gesamten Klassen Referenzen stack.
+			-> freeClassRef
+				- Clearing the whole class ref stack.
 			-> addClassRef
-				- Erstellt Referenz zu einer CSS Klasse.
+				- Create a ref of a class.
 			-> getClassRef
-				- Kriegt die CSS Klasse die referenziert wird.
-			-> freeCompiledClass
-				- Löscht den gesamten Klassen stack.
+				- Get the ref of a class.
+			-> freeClass
+				- Clearing the whole class stack.
 			-> addClass
-				- Fügt eine CSS Klasse hinzu.
+				- Add a class to the class stack.
 			-> getCompleteClass
-				- Gibt die unkompilierte CSS Klasse aus mit allen vergebenen Attributen aller CSS Klassen.
+				- Get all CSS classes which point on your element.
 			-> getFirstClass
-				- Gibt die unkompilierte CSS Klasse aus mit den vergebenen Attributen der ersten CSS Klasse.
+				- Get the first CSS class which point on your element.
 			-> freeCompiledClass
-				- Löscht den gesamten compilierten Klassen stack.
+				- Clearing the whole compiled class stack.
 			-> getCompiledClass
-				- Gibt die kompilierte CSS Klasse aus in welcher alle Attribute je nach Priorität zusammengefügt wurden.
+				- Get a compiled CSS class for your element where everything get compared like prios etc.
 			-> get
-				- Holt sich die CSS Datei.
+				- Get a CSS file with Ajax.
 			-> read
-				- Liest die CSS Datei komplett ungefiltert.
+				- Read the CSS file.
 			-> readWithFilter
-				- Liest die CSS Datei gefiltert.
+				- Read the CSS file with a property filter.
 			-> searchFirst
-				- Sucht die erste Klasse welche zutreffend ist (Benutzt .getCompiledClass alternativen werden noch hinzugefügt).
+				- Search for a special property and get the first class which got the property.
 			-> searchWithCallback
-				- Sucht alle Klassen welche zutreffend sind mit Callback Funktion (Benutzt .getCompiledClass alternativen werden noch hinzugefügt).
+				- Search for a special property and get all classes which got the property (with callback).
 			-> searchInactiveArray
-				- Sucht alle inaktiven Klassen welche zutreffend sind ohne Callback Funktion (Benutzt .getCompiledClass alternativen werden noch hinzugefügt).
+				- Search for a special property and get all classes which got the property and which are inactive.
 			-> searchActiveArray
-				- Sucht alle aktiven Klassen welche zutreffend sind ohne Callback Funktion (Benutzt .getCompiledClass alternativen werden noch hinzugefügt).
+				- Search for a special property and get all classes which got the property and which are active.
 			-> searchArray
-				- Sucht alle Klassen welche zutreffend sind ohne Callback Funktion (Benutzt .getCompiledClass alternativen werden noch hinzugefügt).
+				- Search for a special property and get all classes which got the property.
 			-> scrape
-				- Führt .get und .read Methoden hintereinander aus.
+				- Execute the .get and .read method.
 			-> scrapeWithFilter
-				- Führt .get und .readWithFilter Methoden hintereinander aus.
+				- Execute the .get and .readWithFilter method.
 			
 			Static:
 			-> getTrimStr
@@ -63,13 +63,13 @@ var cssReader = function (options){
 			-> getCompressedCss
 				- Compress the whole CSS File
 			-> getClassHash
-				- Erstellt einen eindeutigen Hash von einer Klasse.
+				- Create a hash of a class
 			-> getClassPath
-				- Holt alle Elemente welche eine Klasse selektiert.
+				- Get the full path of an element
 			-> getClassPriority
-				- Generiert die Priorität einer Klasse.
+				- Get the prio of a class
 			-> isAttrImportant
-				- Überprüft ob ein Attribut auf "!important" gesetzt ist.
+				- Check if a class property is important
 	*/
 	var reader = this;
 	var generic = {
