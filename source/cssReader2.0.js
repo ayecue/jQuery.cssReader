@@ -1,9 +1,9 @@
 ﻿/*
  * Plugin: cssReader
- * Version: 2.0
+ * Version: 2.1
  *
  * Beschreibung:
- * - Liest und interpretiert ein gesamtes CSS File
+ * - Reading a CSS File.
  */
 var cssReader = function (options){
 	/*
@@ -243,7 +243,9 @@ var cssReader = function (options){
 
 				if (classAttr[0].length>0)
 				{
+					if (parentIndex in settings.attrContainer) parentIndex+=settings.attrContainer.length+1;
 					settings.attrContainer[parentIndex]=[];
+					
 					$.each(classAttr[0].split(";"),function(attrIndex,attrString){
 						try
 						{
