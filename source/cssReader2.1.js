@@ -1,6 +1,6 @@
 ﻿/*
  * Plugin: cssReader
- * Version: 2.1
+ * Version: 2.1a
  *
  * Beschreibung:
  * - Reading a CSS File.
@@ -158,7 +158,7 @@ var cssReader = function (options){
 	{
 		var firstClass=reader.getCompleteClass(classHash);
 	
-		return ("0" in firstClass) ? firstClass[0] : false;
+		return (0 in firstClass) ? firstClass[0] : false;
 	};
 	
 	this.freeCompiledClass=function()
@@ -181,8 +181,8 @@ var cssReader = function (options){
 		{
 			settings.classLastCompiled[classHash]=[];
 
-			$.each(settings.classContainer[classHash],function(key,value){
-				var classAttr=settings.attrContainer[value.attrIndex];
+			$.each(settings.classContainer[classHash],function(i,c){
+				var classAttr=settings.attrContainer[c.attrIndex];
 
 				for (attrKey in classAttr)
 				{
@@ -191,22 +191,22 @@ var cssReader = function (options){
 					if (!(attrKey in settings.classLastCompiled[classHash]))
 					{
 						settings.classLastCompiled[classHash][attrKey]={
-							attrPrio:value.lastPriority,
+							attrPrio:c.lastPriority,
 							attrValue:classAttr[attrKey],
-							attrPath:value.classPath,
-							attrClass:value.classString,
+							attrPath:c.classPath,
+							attrClass:c.classString,
 							attrImportant:attrImportant
 						};
 					}
 					else if (settings.classLastCompiled[classHash][attrKey].attrImportant<attrImportant || 
-							(settings.classLastCompiled[classHash][attrKey].attrPrio<=value.lastPriority
+							(settings.classLastCompiled[classHash][attrKey].attrPrio<=c.lastPriority
 							&& settings.classLastCompiled[classHash][attrKey].attrImportant==attrImportant))
 					{
 						settings.classLastCompiled[classHash][attrKey]={
-							attrPrio:value.lastPriority,
+							attrPrio:c.lastPriority,
 							attrValue:classAttr[attrKey],
-							attrPath:value.classPath,
-							attrClass:value.classString,
+							attrPath:c.classPath,
+							attrClass:c.classString,
 							attrImportant:attrImportant
 						};
 					}
@@ -236,17 +236,17 @@ var cssReader = function (options){
 	
 		if (currentCssString.length>0)
 		{
-			return $.each(currentCssString,function(parentIndex,parentElement) {
+			return $.each(currentCssString,function(i,parentElement) {
 				var classNames=parentElement.replace(/{([^}]*)}/gi,"").match(/(?:[#.\w\s:,>\-_*"=\[\]]+)/gi);
 				var classAttr=parentElement.match(/[^}{*\/]+:[^}{]*[^*\/]*?;?/gi,"");
 				var classAttrSize=0;
 
 				if (classAttr[0].length>0)
 				{
-					if (parentIndex in settings.attrContainer) parentIndex+=settings.attrContainer.length+1;
-					settings.attrContainer[parentIndex]=[];
-					
-					$.each(classAttr[0].split(";"),function(attrIndex,attrString){
+					var attrContainerLength=settings.attrContainer.length;
+					settings.attrContainer[attrContainerLength]=[];
+
+					$.each(classAttr[0].split(";"),function(i,attrString){
 						try
 						{
 							if (attrString.length>0)
@@ -256,7 +256,7 @@ var cssReader = function (options){
 								var splittedValue=cssReader.getTrimStr(splittedAttrString[1]);
 								
 								if (splittedKey.length>0 && splittedValue.length>0)
-									settings.attrContainer[parentIndex][splittedKey]=splittedValue;
+									settings.attrContainer[attrContainerLength][splittedKey]=splittedValue;
 							}
 						} catch(e) {};
 						classAttrSize++;
@@ -264,13 +264,13 @@ var cssReader = function (options){
 					
 					if (classAttrSize>0)
 					{
-						$.each(classNames,function(classParentIndex,classParentString) {
+						$.each(classNames,function(i,classParentString) {
 							if (/,/.test(classParentString))
 								var classArray=classParentString.split(",");
 							else
 								var classArray=[classParentString];
 								
-							$.each(classArray,function(classIndex,classString){
+							$.each(classArray,function(i,classString){
 								try
 								{
 									if (classString.length>0)
@@ -284,11 +284,11 @@ var cssReader = function (options){
 											
 											try
 											{
-												reader.addClass(trimmedClassString,classHash,fullClassString,parentIndex);
+												reader.addClass(trimmedClassString,classHash,fullClassString,attrContainerLength);
 											}
 											catch(e)
 											{
-												reader.addClass(trimmedClassString,classHash.toString(),fullClassString,parentIndex);
+												reader.addClass(trimmedClassString,classHash.toString(),fullClassString,attrContainerLength);
 											}
 										}
 										else if (fullClassString === false)
@@ -297,25 +297,25 @@ var cssReader = function (options){
 										
 											try
 											{
-												reader.addClass(trimmedClassString,classHash,false,parentIndex);
+												reader.addClass(trimmedClassString,classHash,false,attrContainerLength);
 											}
 											catch(e)
 											{
-												reader.addClass(trimmedClassString,classHash,false,parentIndex);
+												reader.addClass(trimmedClassString,classHash,false,attrContainerLength);
 											}
 										}
 										else
 										{
-											$.each(fullClassString,function(key,value){
-												var classHash=cssReader.getClassHash(value);
+											$.each(fullClassString,function(i,c){
+												var classHash=cssReader.getClassHash(c);
 											
 												try
 												{
-													reader.addClass(trimmedClassString,classHash,value,parentIndex);
+													reader.addClass(trimmedClassString,classHash,c,attrContainerLength);
 												}
 												catch(e)
 												{
-													reader.addClass(trimmedClassString,classHash.toString(),value,parentIndex);
+													reader.addClass(trimmedClassString,classHash.toString(),c,attrContainerLength);
 												}
 											});
 										}
@@ -339,7 +339,7 @@ var cssReader = function (options){
 		
 		var filterReg=new RegExp("("+filterString+"):[^}{]*[^*\/]*?;","gi");
 		var filteredCss=[];
-		$.each(settings.fetchedCss,function(parentIndex,parentElement) {
+		$.each(settings.fetchedCss,function(i,parentElement) {
 			if (parentElement.match(filterReg))
 				filteredCss.push(parentElement);
 		});
