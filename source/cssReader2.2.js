@@ -1,12 +1,12 @@
 /*
  * Plugin: cssReader
- * Version: 2.2
+ * Version: 2.2a
  *
  * Beschreibung:
  * - Reading a CSS File.
  */
 var cssReader = function (options){
-  /*
+	/*
 		- Parameter
 		
 		@targetUrl (string)
@@ -200,7 +200,14 @@ var cssReader = function (options){
 	
 	this.getCompleteClassRef=function(classString)
 	{
-		return reader.getCompleteClass(reader.getClassRef(classString));
+		var refContainer=reader.getClassRef(classString);
+		var completeClassContainer=[];
+		
+		$.each(refContainer,function(i,value){
+			firstClassContainer.push(reader.getCompleteClass(value));
+		});
+	
+		return completeClassContainer;
 	};
 	
 	this.getFirstClass=function(classHash)
@@ -212,7 +219,14 @@ var cssReader = function (options){
 	
 	this.getFirstClassRef=function(classString)
 	{
-		return reader.getFirstClass(reader.getClassRef(classString));
+		var refContainer=reader.getClassRef(classString);
+		var firstClassContainer=[];
+		
+		$.each(refContainer,function(i,value){
+			firstClassContainer.push(reader.getFirstClass(value));
+		});
+	
+		return firstClassContainer;
 	};
 	
 	this.freeCompiledClass=function()
@@ -275,7 +289,14 @@ var cssReader = function (options){
 	
 	this.getCompiledClassRef=function(classString)
 	{
-		return reader.getCompiledClass(reader.getClassRef(classString));
+		var refContainer=reader.getClassRef(classString);
+		var compiledClassContainer=[];
+		
+		$.each(refContainer,function(i,value){
+			compiledClassContainer.push(reader.getCompiledClass(value));
+		});
+	
+		return compiledClassContainer;
 	};
 	
 	this.get=function ()
