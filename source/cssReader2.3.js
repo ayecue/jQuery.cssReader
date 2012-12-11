@@ -1,6 +1,6 @@
 /*
  * Plugin: cssReader
- * Version: 2.3
+ * Version: 2.3a
  *
  * Beschreibung:
  * - Reading a CSS File.
@@ -132,20 +132,13 @@ var attrInstance=function(){
 		if (!(index in instance.container))
 			instance.container[index]=[];
 			
-		try
-		{
-			if (!(attrName in instance.container[index]))
-				instance.container[index][attrName]=[];
+		if (typeof instance.container[index][attrName] != "object")
+			attrName=attrInstance.debugPrefixString+attrName;
 			
-			instance.container[index][attrName].push(attrValue);
-		}
-		catch(e)
-		{
-			if (!(attrInstance.debugPrefixString+attrName in instance.container[index]))
-				instance.container[index][attrInstance.debugPrefixString+attrName]=[];
-				
-			instance.container[index][attrInstance.debugPrefixString+attrName].push(attrValue);
-		}
+		if (!(attrName in instance.container[index]))
+			instance.container[index][attrName]=[];
+		
+		instance.container[index][attrName].push(attrValue);
 	};
 	
 	this.get=function(index)
@@ -153,8 +146,8 @@ var attrInstance=function(){
 		return (index in instance.container) ? instance.container[index] : false;
 	};
 };
-attrInstance.debugPrefixString="&";
-attrInstance.debugPrefixPattern=new RegExp(attrInstance.debugPrefixString,"i");
+attrInstance.debugPrefixString="db_";
+attrInstance.debugPrefixPattern=new RegExp("^"+attrInstance.debugPrefixString,"i");
 attrInstance.debugPrefixFilter=function(str){
 	return str.replace(attrInstance.prefixPattern,"")
 };
@@ -190,7 +183,7 @@ var cssReader = function (options){
 	
 	this.fetchCssFilter=function(filterArray)
 	{
-		var filterString=typeof filterArray != "string" ? filterString=filterArray.join("|") : filterString=filterArray;
+		var filterString=typeof filterArray != "string" ? filterString=filterArray.join("|") : filterArray;
 		
 		reader.d.fetchedCss=reader.d.plainCss.match(new RegExp("([#.\\w\\s:,>\\-_*\"=\\[\\]]+){(?:[^}]*(?:"+filterString+")+[^}]*)}","gi"));
 	};
@@ -243,30 +236,21 @@ var cssReader = function (options){
 							var classArray=classParentString.indexOf(",")!=-1 ? classParentString.split(",") : [classParentString];
 
 							$.each(classArray,function(i,classString){
-								try
+								if (classString.length>0)
 								{
-									if (classString.length>0)
-									{
-										var trimmedClassString=cssReader.getTrimStr(classString);
-										var fullClassString=cssReader.getClassPath($(trimmedClassString));
+									var trimmedClassString=cssReader.getTrimStr(classString);
+									try { var fullClassString=cssReader.getClassPath($(trimmedClassString));}
+									catch (e) { var fullClassString=false;}
 
-										if (typeof fullClassString == "string")
-										{
-											reader.classIns.add(trimmedClassString,cssReader.getClassHash(fullClassString),fullClassString,attrContainerLength,reader.refIns);
-										}
-										else if (fullClassString === false)
-										{
-											reader.classIns.add(trimmedClassString,cssReader.getClassHash(trimmedClassString),false,attrContainerLength,reader.refIns);
-										}
-										else
-										{
-											$.each(fullClassString,function(i,c){
-												reader.classIns.add(trimmedClassString,cssReader.getClassHash(c),c,attrContainerLength,reader.refIns);
-											});
-										}
-									}
+									if (typeof fullClassString == "string")
+										reader.classIns.add(trimmedClassString,cssReader.getClassHash(fullClassString),fullClassString,attrContainerLength,reader.refIns);
+									else if (fullClassString === false)
+										reader.classIns.add(trimmedClassString,cssReader.getClassHash(trimmedClassString),false,attrContainerLength,reader.refIns);
+									else
+										$.each(fullClassString,function(i,c){
+											reader.classIns.add(trimmedClassString,cssReader.getClassHash(c),c,attrContainerLength,reader.refIns);
+										});
 								}
-								catch(e){}
 							});
 						});
 					}
@@ -277,7 +261,7 @@ var cssReader = function (options){
 	
 	this.readFilter=function(filterArray)
 	{
-		var filterString=typeof filterArray != "string" ? filterString=filterArray.join("|") : filterString=filterArray;
+		var filterString=typeof filterArray != "string" ? filterString=filterArray.join("|") : filterArray;
 		
 		var filterReg=new RegExp("("+filterString+"):[^}{]*[^*\\/]*?;","gi");
 		var filteredCss=[];
