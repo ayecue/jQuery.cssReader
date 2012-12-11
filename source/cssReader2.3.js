@@ -1,6 +1,6 @@
 /*
  * Plugin: cssReader
- * Version: 2.3a
+ * Version: 2.3b
  *
  * Beschreibung:
  * - Reading a CSS File.
@@ -132,11 +132,15 @@ var attrInstance=function(){
 		if (!(index in instance.container))
 			instance.container[index]=[];
 			
-		if (typeof instance.container[index][attrName] != "object")
-			attrName=attrInstance.debugPrefixString+attrName;
-			
 		if (!(attrName in instance.container[index]))
 			instance.container[index][attrName]=[];
+			
+		if (typeof instance.container[index][attrName] != "object")
+		{
+			delete instance.container[index][attrName];
+			attrName=attrInstance.debugPrefixString+attrName;
+			instance.container[index][attrName]=[];
+		}
 		
 		instance.container[index][attrName].push(attrValue);
 	};
