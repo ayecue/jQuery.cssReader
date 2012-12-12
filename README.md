@@ -18,7 +18,7 @@ even when you are using the Internet Explorer. Just imagine the case that you go
 And you want to fix them but automated and not manual. So this plugin will be very helpful.
 
 You can also create your own properties, the script will read them. As long as they are valid. Here an example:
-================
+
 Code:
 ================
 	.my_css_class
@@ -31,7 +31,7 @@ Code:
 
 The "cssReader" will also recognize the priority of your property. The priority depend on position and selectors used 
 at the class where the property is in.
-================
+
 Code:
 ================
 	.my_css_class
@@ -197,7 +197,7 @@ cssReader (featuring classes)
 First Steps:
 ================
 Now i'll describe what's done in the "test1.html". This little test shows how the "cssReader" reads CSS, compiling everything and declaring elements.
-================
+
 Code:
 ================
 	//Create a new "cssReader".
