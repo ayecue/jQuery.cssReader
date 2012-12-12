@@ -49,7 +49,8 @@ There are much more posibilities but that's for now.
 
 API:
 ================
-cssReader (class methods)
+	@cssReader (class methods)
+	================
 	@setUrl
 		-> description:
 			Set the path of the CSS file.
@@ -132,9 +133,10 @@ cssReader (class methods)
 			boolean : Should get use the filter?
 			boolean : Should read use the filter?
 		-> returns:
-			null
+			null			
 			
-cssReader (static methods)
+	@cssReader (static methods)
+	================
 	@getTrimStr
 		-> description:
 			Trim string.
@@ -183,7 +185,8 @@ cssReader (static methods)
 		-> returns:
 			boolean: Is important.
 			
-cssReader (featuring classes)
+	@cssReader (featuring classes)
+	================
 	@classInstance
 		-> Stack of all pointing classes of an element.
 	@refInstance
