@@ -1,6 +1,6 @@
 /*
  * Plugin: cssReader
- * Version: 2.5b
+ * Version: 2.5c
  *
  * Beschreibung:
  * - Reading a CSS File.
@@ -297,37 +297,41 @@ cssReader.getClassHash = function(classString)
 {
 	if (classString.lenght==0) return false;
 
-	var hash=0;
-	$.each(classString,function(index){
-		hash = ((hash<<5)-hash)+classString.charCodeAt(index);
+	hash=0;
+	for (i=0,il=classString.length;i<il;i++)
+	{
+		hash = ((hash<<5)-hash)+classString.charCodeAt(i);
 		hash = hash & hash;
-	});
+	}
 
 	return "md"+hash.toString();
 };
 cssReader.getClassPath=function (element)
 {
-	currentElement=$(element);
-	if (!currentElement[0]) return false;
+	if (!element[0]) return false;
 
-	var allClassPath=[];
-	currentElement.each(function(){
-		var classPath="";
-		self=$(this);
-
-		self.parents("*").each(function(){
-			parents=$(this);
-			classString=(className=parents.attr("class")) ? "."+className.replace(/\s/gi,".") : "";
-			idString=(idName=parents.attr("id")) ? "#"+idName.replace(/\s/gi,"#") : "";
+	allClassPath=[];
+	for (i=0,il=element.length;i<il;i++)
+	{
+		current=element.eq(i);
+		parents=current.parents("*");
+		classPath="";
 		
-			classPath=parents[0].tagName.toLowerCase()+idString+classString+" "+classPath;
-		});
-
-		allClassPath.push(	classPath.replace(/\s/gi," > ")
-							+self[0].tagName.toLowerCase()
-							+((className=self.attr("class")) ? "."+className.replace(/\s/gi,".") : "")
-							+((idName=self.attr("id")) ? "#"+idName.replace(/\s/gi,"#") : ""));
-	});
+		for (j=0,jl=parents.length;j<jl;j++)
+		{
+			classString	=(className=parents[j].getAttribute("class")) 	? "."+className.replace(/\s/g,".") : "";
+			idString	=(idName=parents[j].getAttribute("id")) 		? "."+idName.replace(/\s/g,"#") : "";
+			
+			classPath=parents[j].tagName.toLowerCase()+idString+classString+" "+classPath;
+		}
+		
+		allClassPath.push(
+							classPath.replace(/\s/gi," > ")
+							+ element[i].tagName.toLowerCase()
+							+ ((className=element[i].getAttribute("class")) ? "."+className.replace(/\s/g,".") : "")
+							+ ((idName=element[i].getAttribute("id")) 		? "."+idName.replace(/\s/g,"#") : "")
+		);
+	}
 	
 	return allClassPath.length>0 ? allClassPath : false;
 };
