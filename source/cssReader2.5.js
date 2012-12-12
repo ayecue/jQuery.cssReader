@@ -1,6 +1,6 @@
 /*
  * Plugin: cssReader
- * Version: 2.5d
+ * Version: 2.5e
  *
  * Beschreibung:
  * - Reading a CSS File.
@@ -319,8 +319,8 @@ cssReader.getClassPath=function (element)
 		
 		for (j=0,jl=parents.length;j<jl;j++)
 		{
-			classString	=(className=parents[j].getAttribute("class")) 	? "."+className.replace(/\s/g,".") : "";
-			idString	=(idName=parents[j].getAttribute("id")) 		? "#"+idName.replace(/\s/g,"#") : "";
+			classString	=(className=parents[j].className) 		? "."+className.replace(/\s/g,".") : "";
+			idString	=(idName=parents[j].getAttribute("id")) ? "#"+idName.replace(/\s/g,"#") : "";
 			
 			classPath=parents[j].tagName.toLowerCase()+idString+classString+" "+classPath;
 		}
@@ -328,8 +328,8 @@ cssReader.getClassPath=function (element)
 		allClassPath.push(
 							classPath.replace(/\s/gi," > ")
 							+ element[i].tagName.toLowerCase()
-							+ ((className=element[i].getAttribute("class")) ? "."+className.replace(/\s/g,".") : "")
-							+ ((idName=element[i].getAttribute("id")) 		? "#"+idName.replace(/\s/g,"#") : "")
+							+ ((className=element[i].className) 		? "."+className.replace(/\s/g,".") : "")
+							+ ((idName=element[i].getAttribute("id")) 	? "#"+idName.replace(/\s/g,"#") : "")
 		);
 	}
 	
