@@ -1,6 +1,6 @@
 /*
  * Plugin: cssReader
- * Version: 2.5e
+ * Version: 2.5g
  *
  * Beschreibung:
  * - Reading a CSS File.
@@ -150,7 +150,7 @@ var cssReader = function (options){
 	
 	this.fetchCss=function ()
 	{
-		reader.d.fetchedCss=reader.d.plainCss.match(/([#.\w\s:,>\-_*"=\[\]]+){(?:[^}]*)}/gi);
+		reader.d.fetchedCss=reader.d.plainCss.match(/([^}{]+{[^}{]*})/gi);
 	};
 	
 	this.fetchCssFilter=function(filterArray)
@@ -180,7 +180,7 @@ var cssReader = function (options){
 
 		for (var i=0,il=currentCssString.length;i<il;i++)
 		{
-			matches=/([#.\w\s:,>\-_*"=\[\]]+){([^}{*\/]+:[^}{]*[^*\/]*?;?)+}/gi.exec(currentCssString[i]);
+			matches=/([^}{]+){((?:[^:]+:[^;]+;[\s]*)+?)}/gi.exec(currentCssString[i]);
 			classNames=matches[1];
 			classAttr=matches[2];
 
@@ -239,8 +239,7 @@ var cssReader = function (options){
 	this.readFilter=function(filterArray)
 	{
 		filterString=typeof filterArray != "string" ? filterString=filterArray.join("|") : filterArray;
-		
-		filterReg=new RegExp("("+filterString+"):[^}{]*[^*\\/]*?;","gi");
+		filterReg=new RegExp("("+filterString+"):[^;]+;","gi");
 		filteredCss=[];
 		for (var i=0,il=reader.d.fetchedCss.length;i<il;i++)
 		{
