@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Jquery.cssreader : With this plugin you can read CSS files. It will also read the parts in the CSS file which your normal browser won't read. The Internet Explorer won't read CSS properties like for example &quot;text-shadow&quot;. This script will read it even when you are using the Internet Explorer. Just imagine the case that you got CSS3 properties in your stylesheet. And you want to fix them but automated and not manual. So this plugin will be very helpful." />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Jquery.cssreader</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/ayecue/jQuery.cssReader">View on GitHub</a>
+
+          <h1 id="project_title">Jquery.cssreader</h1>
+          <h2 id="project_tagline">With this plugin you can read CSS files. It will also read the parts in the CSS file which your normal browser won't read. The Internet Explorer won't read CSS properties like for example &quot;text-shadow&quot;. This script will read it even when you are using the Internet Explorer. Just imagine the case that you got CSS3 properties in your stylesheet. And you want to fix them but automated and not manual. So this plugin will be very helpful.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/ayecue/jQuery.cssReader/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/ayecue/jQuery.cssReader/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>cssReader (jQuery Plugin)</h1>
+
+<ul>
+<li>
+<strong>Author:</strong> ayecue</li>
+<li>
+<strong>Version:</strong> 2.5h</li>
+<li>
+<strong>Language:</strong> Javascript</li>
+<li>
+<strong>Framework:</strong> jQuery</li>
+</ul><h2>Short Description:</h2>
+
+<p>With this plugin you can read CSS files. It will also read the parts in the CSS file which your normal browser won't read.</p>
+
+<h2>Advanced Description:</h2>
+
+<p>The Internet Explorer won't read CSS properties like for example <strong>text-shadow</strong>. This script will read it even when you are using the Internet Explorer. Just imagine the case that you got <strong>CSS3</strong> properties in your stylesheet. And you want to fix them but automated and not manual. So this plugin will be very helpful.</p>
+
+<p>You can also create your own properties, the script will read them. As long as they are valid. Here an example:</p>
+
+<h3>Code:</h3>
+
+<p><code>
+    .my_css_class
+    {
+      width: 100%;
+      margin: 0;
+      my-own-propery: hey there; //Your own property.
+    }
+</code></p>
+
+<p>The <strong>cssReader</strong> will also recognize the priority of your property. The priority depend on position and selectors used 
+at the class where the property is in.</p>
+
+<h3>Code:</h3>
+
+<p><code>
+    .my_css_class
+    {
+      width: 100%;
+    }
+    div.my_css_class
+    {
+      width: 50%; //This property will have a higher priority.
+    }
+</code></p>
+
+<p>There are much more posibilities but that's for now.</p>
+
+<h2>API:</h2>
+
+<pre><code>### @cssReader (class methods)
+
+@setUrl
+    -&gt; description:
+        Set the path of the CSS file.
+    -&gt; parameter:
+        string : Target path of the CSS file.
+    -&gt; returns:
+        null
+
+@setCss
+    -&gt; description:
+        Set the CSS content here and compress it.
+    -&gt; parameter:
+        string : CSS content
+    -&gt; returns:
+        null
+
+@fetchCss
+    -&gt; description:
+        Convert CSS content to an array where every class is one part.
+    -&gt; parameter:
+        none
+    -&gt; returns:
+        null
+
+@fetchCssFilter
+    -&gt; description:
+        Convert CSS content with a filter to an array where every class is one part.
+    -&gt; parameter:
+        string|array : Filter.
+    -&gt; returns:
+        null
+
+@get
+    -&gt; description:
+        Send AJAX request to get your file. When it's done the CSS will get fetched automaticly. You can add a filter.
+    -&gt; parameter:
+        string|array : Filter.
+    -&gt; returns:
+        null
+
+@read
+    -&gt; description:
+        Read fetched CSS array. You can add your own fetched CSS array.
+    -&gt; parameter:
+        array : Fetched CSS array.
+    -&gt; returns:
+        true
+
+@readFilter
+    -&gt; description:
+        Read fetched CSS array with a filter.
+    -&gt; parameter:
+        string|array : Filter.
+    -&gt; returns:
+        true
+
+@search
+    -&gt; description:
+        Will search for a property.
+    -&gt; parameter:
+        function : Callback.
+        string : Search string.
+    -&gt; returns:
+        null
+
+@scrape
+    -&gt; description:
+        Will get and read a CSS file automaticly.
+    -&gt; parameter:
+        function : Callback.
+    -&gt; returns:
+        null
+
+@scrapeFilter
+    -&gt; description:
+        Will get and read a CSS file automaticly with filter.
+    -&gt; parameter:
+        function : Callback.
+        string|array : Filter.
+        boolean : Should get use the filter?
+        boolean : Should read use the filter?
+    -&gt; returns:
+        null            
+
+
+### @cssReader (static methods)
+
+@getTrimStr
+    -&gt; description:
+        Trim string.
+    -&gt; parameter:
+        string : String to be trimmed.
+    -&gt; returns:
+        string: Trimmed String
+
+@getCompressedCss
+    -&gt; description:
+        Compress CSS content.
+    -&gt; parameter:
+        string : CSS content.
+    -&gt; returns:
+        string: Compressed CSS content.
+
+@getClassHash
+    -&gt; description:
+        Get hash of string.
+    -&gt; parameter:
+        string : String.
+    -&gt; returns:
+        string: Hash.
+
+@getClassPath
+    -&gt; description:
+        Get the full path of a jQuery element.
+    -&gt; parameter:
+        object : jQuery element.
+    -&gt; returns:
+        string: Full path.
+
+@getClassPriority
+    -&gt; description:
+        Rate the priority of a class.
+    -&gt; parameter:
+        string : Class selector string.
+    -&gt; returns:
+        integer: Priority.
+
+@isAttrImportant
+    -&gt; description:
+        Check if a property is important.
+    -&gt; parameter:
+        string : Property value.
+    -&gt; returns:
+        boolean: Is important.
+`
+
+### @cssReader (featuring classes)
+`
+@classInstance
+    -&gt; Stack of all pointing classes of an element.
+@refInstance
+    -&gt; Stack of references for faster searching.
+@attrInstance
+    -&gt; Stack of all class attributes.
+@compiledInstance
+    -&gt; Stack of compiled classes resulting of the @classInstance stack and the @attrInstance stack.
+</code></pre>
+
+<h2>First Steps:</h2>
+
+<p>Now i'll describe what's done in the "test1.html". This little test shows how the "cssReader" reads CSS, compiling everything and declaring elements.</p>
+
+<h3>Code:</h3>
+
+<pre><code>//Create a new "cssReader".
+var newReader=new cssReader();
+
+//Here we set the CSS content from the style element in the head.
+newReader.setCss($("head style").html());
+//Now Im converting the whole CSS content to an array.
+newReader.fetchCss();
+//After converting I read the whole array without a filter.
+newReader.read();
+
+//After everything is setup I can start a search. This search I do without any search string.
+//That's because I want to get everything.
+var result=newReader.search(function(c){
+    //In the callback I get all compiled classes.
+    for (property in c)
+    {
+        //The property is always the key of every object inside a compiled stack.
+        //With the object property ".attrPath" I get the current element and
+        //with the property ".attrValue" I get the value of the current property.
+        //So this call do nothing else than giving every element their class values.
+        $(c[property].attrPath).css(property,c[property].attrValue);
+    }
+});
+</code></pre>
+
+<p>I'll add some more examples in the future.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Jquery.cssreader maintained by <a href="https://github.com/ayecue">ayecue</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
