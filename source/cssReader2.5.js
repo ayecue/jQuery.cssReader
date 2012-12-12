@@ -1,6 +1,6 @@
 /*
  * Plugin: cssReader
- * Version: 2.5
+ * Version: 2.5a
  *
  * Beschreibung:
  * - Reading a CSS File.
@@ -180,12 +180,13 @@ var cssReader = function (options){
 
 		for (var i=0,il=currentCssString.length;i<il;i++)
 		{
-			classNames=currentCssString[i].replace(/{([^}]*)}/gi,"").match(/(?:[#.\w\s:,>\-_*"=\[\]]+)/gi);
-			classAttr=currentCssString[i].replace(/(?:[#.\w\s:,>\-_*"=\[\]]+{|}$)/ig,"").match(/[^}{*\/]+:[^}{]*[^*\/]*?;?/gi,"");
+			matches=/([#.\w\s:,>\-_*"=\[\]]+){([^}{*\/]+:[^}{]*[^*\/]*?;?)+}/gi.exec(currentCssString[i]);
+			classNames=matches[1];
+			classAttr=matches[2];
 
-			if (classAttr && classAttr[0].length>0)
+			if (classAttr && classAttr.length>0)
 			{
-				attrSplit=classAttr[0].split(";");
+				attrSplit=classAttr.split(";");
 				attrContainerLength=reader.attrIns.container.length;
 				
 				for (var classAttrSize=0,cl=attrSplit.length;classAttrSize<cl;classAttrSize++)
@@ -205,29 +206,26 @@ var cssReader = function (options){
 
 				if (classAttrSize>0)
 				{
-					for (var j=0,jl=classNames.length;j<jl;j++)
+					classParentFilter=classNames.indexOf(",")!=-1 ? classNames.split(",") : [classNames];
+					
+					for (var g=0,gl=classParentFilter.length;g<gl;g++)
 					{
-						classParentFilter=classNames[j].indexOf(",")!=-1 ? classNames[j].split(",") : [classNames[j]];
+						classString=classParentFilter[g];
 						
-						for (var g=0,gl=classParentFilter.length;g<gl;g++)
+						if (classString.length>0)
 						{
-							classString=classParentFilter[g];
-							
-							if (classString.length>0)
-							{
-								trimmedClassString=cssReader.getTrimStr(classString);
-								try { var fullClassString=cssReader.getClassPath($(trimmedClassString));}
-								catch (e) { var fullClassString=false;}
+							trimmedClassString=cssReader.getTrimStr(classString);
+							try { var fullClassString=cssReader.getClassPath($(trimmedClassString));}
+							catch (e) { var fullClassString=false;}
 
-								if (typeof fullClassString == "string")
-									reader.classIns.add(trimmedClassString,cssReader.getClassHash(fullClassString),fullClassString,attrContainerLength,reader.refIns);
-								else if (fullClassString === false)
-									reader.classIns.add(trimmedClassString,cssReader.getClassHash(trimmedClassString),false,attrContainerLength,reader.refIns);
-								else
-								{
-									for (var y=0,yl=fullClassString.length;y<yl;y++)
-										reader.classIns.add(trimmedClassString,cssReader.getClassHash(fullClassString[y]),fullClassString[y],attrContainerLength,reader.refIns);
-								}
+							if (typeof fullClassString == "string")
+								reader.classIns.add(trimmedClassString,cssReader.getClassHash(fullClassString),fullClassString,attrContainerLength,reader.refIns);
+							else if (fullClassString === false)
+								reader.classIns.add(trimmedClassString,cssReader.getClassHash(trimmedClassString),false,attrContainerLength,reader.refIns);
+							else
+							{
+								for (var y=0,yl=fullClassString.length;y<yl;y++)
+									reader.classIns.add(trimmedClassString,cssReader.getClassHash(fullClassString[y]),fullClassString[y],attrContainerLength,reader.refIns);
 							}
 						}
 					}
@@ -333,31 +331,24 @@ cssReader.getClassPath=function (element)
 	
 	return allClassPath.length>0 ? allClassPath : false;
 };
+cssReader.getClassPriorityMatches=function(regex,className)
+{
+	var match, pos=0, size=0;
+
+	while (match=regex.exec(className,pos)) {
+		size++;
+		pos=match.index+(match[0].length || 1);
+	}
+	
+	return size;
+}
 cssReader.getClassPriority=function (className)
 {
 	rating=0;
-	singleSelector=className.split(" ");
-
-	for (i=0,il=singleSelector.length;i<il;i++)
-	{		
-		if (/[#.][\w:\-_"=\[\]]+/.test(singleSelector[i]))
-		{	
-			try 
-			{
-				rating+=(id=singleSelector[i].match(/#[\w:\-_"=\[\]]+/gi)) ? id.length*100 : 0;
-				rating+=(cl=singleSelector[i].match(/\.[\w:\-_"=\[\]]+/gi)) ? cl.length*10 : 0;
-				rating+=(tg=singleSelector[i].match(/\w+[#.]/gi)) ? tg.length*1 : 0;
-			}
-			catch(e)
-			{
-				rating+=(id=singleSelector[i].toString().match(/#[\w:\-_"=\[\]]+/gi)) ? id.length*100 : 0;
-				rating+=(cl=singleSelector[i].toString().match(/\.[\w:\-_"=\[\]]+/gi)) ? cl.length*10 : 0;
-				rating+=(tg=singleSelector[i].toString().match(/\w+[#.]/gi)) ? tg.length*1 : 0;
-			}
-		}
-		else if(/[^>]+/.test(singleSelector[i]))
-			rating++;
-	}
+	
+	rating+=cssReader.getClassPriorityMatches(/#[^\s\.#]+/gi,className)*100;
+	rating+=cssReader.getClassPriorityMatches(/\.[^\s\.#]+/gi,className)*10;
+	rating+=cssReader.getClassPriorityMatches(/[^\s]+(?=#|\.)?/gi,className.replace(/[#.][^\s\.#]+/ig,""))*1;
 	
 	return rating;
 };
