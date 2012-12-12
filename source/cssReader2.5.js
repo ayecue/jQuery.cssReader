@@ -1,6 +1,6 @@
 /*
  * Plugin: cssReader
- * Version: 2.5a
+ * Version: 2.5b
  *
  * Beschreibung:
  * - Reading a CSS File.
@@ -331,24 +331,13 @@ cssReader.getClassPath=function (element)
 	
 	return allClassPath.length>0 ? allClassPath : false;
 };
-cssReader.getClassPriorityMatches=function(regex,className)
-{
-	var match, pos=0, size=0;
-
-	while (match=regex.exec(className,pos)) {
-		size++;
-		pos=match.index+(match[0].length || 1);
-	}
-	
-	return size;
-}
 cssReader.getClassPriority=function (className)
 {
 	rating=0;
 	
-	rating+=cssReader.getClassPriorityMatches(/#[^\s\.#]+/gi,className)*100;
-	rating+=cssReader.getClassPriorityMatches(/\.[^\s\.#]+/gi,className)*10;
-	rating+=cssReader.getClassPriorityMatches(/[^\s]+(?=#|\.)?/gi,className.replace(/[#.][^\s\.#]+/ig,""))*1;
+	rating+=(matches=className.match(/#[^\s\.#]+/gi)) ? matches.length*100 : 0;
+	rating+=(matches=className.match(/\.[^\s\.#]+/gi)) ? matches.length*10 : 0;
+	rating+=(matches=className.replace(/[#.][^\s\.#]+/ig,"").match(/[^\s]+(?=#|\.)?/gi)) ? matches.length*1 : 0;
 	
 	return rating;
 };
