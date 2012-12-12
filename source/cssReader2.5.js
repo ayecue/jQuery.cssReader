@@ -1,6 +1,6 @@
 /*
  * Plugin: cssReader
- * Version: 2.5g
+ * Version: 2.5h
  *
  * Beschreibung:
  * - Reading a CSS File.
@@ -243,7 +243,7 @@ var cssReader = function (options){
 		filteredCss=[];
 		for (var i=0,il=reader.d.fetchedCss.length;i<il;i++)
 		{
-			if (reader.d.fetchedCss[i].match(filterReg))
+			if (filterReg.test(reader.d.fetchedCss[i]))
 				filteredCss.push(reader.d.fetchedCss[i]);
 		}
 		
