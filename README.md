@@ -238,7 +238,8 @@ There are small differences:
 - "2.6" got an easier tree of variables
 
 But I the end both do the same. Here some performance testing (Just scraped through the whole CSS File without filters):
-## "2.6"
+
+### 2.6
 - 4% slower than "2.6 less" with ~ 17 Ops/sec (Firefox)
 - 3% slower than "2.6 less" with ~ 20.6 Ops/sec (Chrome)
 - 3% slower than "2.6 less" with ~ 14.7 Ops/sec (Safari)
@@ -247,7 +248,7 @@ But I the end both do the same. Here some performance testing (Just scraped thro
 - 1% slower than "2.6 less" with ~ 8.2 Ops/sec (IE8)
 - 0.31% slower than "2.6 less" with ~ 0.77 Ops/sec (IE7)
 
-## "2.6 less"
+### 2.6 less
 - 4% faster than "2.6" with ~ 17.5 Ops/sec (Firefox)
 - 3% faster than "2.6" with ~ 21.3 Ops/sec (Chrome)
 - 3% faster than "2.6" with ~ 15.5 Ops/sec (Safari)
