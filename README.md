@@ -1,9 +1,8 @@
-cssReader (jQuery Plugin)
-================
-Author: ayecue
-Version: 2.6 & 2.6 less
-Language: Javascript
-Framework: jQuery
+# cssReader (jQuery Plugin)
+* Author: ayecue
+* Version: 2.6 & 2.6 less
+* Language: Javascript
+* Framework: jQuery
 
 
 ### Content
@@ -14,14 +13,12 @@ Framework: jQuery
 * "2.6" vs "2.6 less" (<a href="#26-vs-26-less">shortcut</a>)
 
 
-Short Description:
-================
+## Short Description:
 ### (<a href="#cssreader-jquery-plugin">up</a> | <a href="#advanced-description">next</a>)
 With this plugin you can read CSS files. It will also read the parts in the CSS file which your normal browser won't read.
 
 
-Advanced Description:
-================
+## Advanced Description:
 ### (<a href="#cssreader-jquery-plugin">up</a> | <a href="#short-description">previous</a> | <a href="#api">next</a>)
 The Internet Explorer won't read CSS properties like for example "text-shadow". This script will read it
 even when you are using the Internet Explorer. Just imagine the case that you got CSS3 properties in your stylesheet.
@@ -53,8 +50,7 @@ at the class where the property is in.
 There are much more posibilities but that's for now.
 
 
-API:
-================
+## API:
 ### (<a href="#cssreader-jquery-plugin">up</a> | <a href="#advanced-description">previous</a> | <a href="#first-steps">next</a>)
 	@cssReader (class methods)
 	================
@@ -204,8 +200,7 @@ API:
 		-> Stack of compiled classes resulting of the @classInstance stack and the @attrInstance stack.
 		
 	
-First Steps:
-================
+## First Steps:
 ### (<a href="#cssreader-jquery-plugin">up</a> | <a href="#api">previous</a> | <a href="#26-vs-26-less">next</a>)
 Now i'll describe what's done in the "test1.html". This little test shows how the "cssReader" reads CSS, compiling everything and declaring elements.
 
@@ -236,8 +231,7 @@ Now i'll describe what's done in the "test1.html". This little test shows how th
 
 I'll add some more examples in the future.
 
-"2.6" vs "2.6 less":
-================
+## "2.6" vs "2.6 less":
 ### (<a href="#cssreader-jquery-plugin">up</a> | <a href="#first-steps">previous</a>)
 There are small differences:
 - "2.6 less" need less cache
