@@ -7,41 +7,40 @@ Framework: jQuery
 
 
 ### Content
-* Short Description
-* Advanced Description
-* API
-* First Steps
-* "2.6" vs "2.6 less"
+* Short Description (<a href="#short-description">shortcut</a>)
+* Advanced Description (<a href="#advanced-description">shortcut</a>)
+* API (<a href="#api">shortcut</a>)
+* First Steps (<a href="#first-steps">shortcut</a>)
+* "2.6" vs "2.6 less" (<a href="#26-vs-26-less">shortcut</a>)
 
 
 Short Description:
 ================
+### (<a href="#cssreader-jquery-plugin">up</a> | <a href="#advanced-description">next</a>)
 With this plugin you can read CSS files. It will also read the parts in the CSS file which your normal browser won't read.
 
 
 Advanced Description:
 ================
+### (<a href="#cssreader-jquery-plugin">up</a> | <a href="#short-description">previous</a> | <a href="#api">next</a>)
 The Internet Explorer won't read CSS properties like for example "text-shadow". This script will read it
 even when you are using the Internet Explorer. Just imagine the case that you got CSS3 properties in your stylesheet.
 And you want to fix them but automated and not manual. So this plugin will be very helpful.
 
 You can also create your own properties, the script will read them. As long as they are valid. Here an example:
 
-Code:
-================
+### Code:
 	.my_css_class
 	{
 	  width: 100%;
 	  margin: 0;
 	  my-own-propery: hey there; //Your own property.
 	}
-================
 
 The "cssReader" will also recognize the priority of your property. The priority depend on position and selectors used 
 at the class where the property is in.
 
-Code:
-================
+### Code:
 	.my_css_class
 	{
 	  width: 100%;
@@ -50,13 +49,13 @@ Code:
 	{
 	  width: 50%; //This property will have a higher priority.
 	}
-================
 
 There are much more posibilities but that's for now.
 
 
 API:
 ================
+### (<a href="#cssreader-jquery-plugin">up</a> | <a href="#advanced-description">previous</a> | <a href="#first-steps">next</a>)
 	@cssReader (class methods)
 	================
 	@setUrl
@@ -207,10 +206,10 @@ API:
 	
 First Steps:
 ================
+### (<a href="#cssreader-jquery-plugin">up</a> | <a href="#api">previous</a> | <a href="#26-vs-26-less">next</a>)
 Now i'll describe what's done in the "test1.html". This little test shows how the "cssReader" reads CSS, compiling everything and declaring elements.
 
-Code:
-================
+### Code:
 	//Create a new "cssReader".
 	var newReader=new cssReader();
 				
@@ -234,12 +233,12 @@ Code:
 			$(c[property].attrPath).css(property,c[property].attrValue);
 		}
 	});
-================
 
 I'll add some more examples in the future.
 
 "2.6" vs "2.6 less":
 ================
+### (<a href="#cssreader-jquery-plugin">up</a> | <a href="#first-steps">previous</a>)
 There are small differences:
 - "2.6 less" need less cache
 - "2.6 less" loops are abit more difficult
