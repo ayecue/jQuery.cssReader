@@ -65,52 +65,54 @@ var cssReader = function (options){
 
 		for (var i=0,il=currentCssString.length;i<il;i++)
 		{
-			matches=cssReader.patternRead.exec(currentCssString[i]);
-			classNames=matches[1];
-			classAttr=matches[2];
-
-			if (classAttr && classAttr.length>0)
+			if (matches=cssReader.patternRead.exec(currentCssString[i]))
 			{
-				attrSplit=classAttr.split(";");
-				attrContainerLength=reader.attrIns.container.length;
-				
-				for (var classAttrSize=0,cl=attrSplit.length;classAttrSize<cl;classAttrSize++)
-				{
-					attrString=attrSplit[classAttrSize];
-					
-					if (cssReader.patternProperty.test(attrString))
-					{
-						splittedAttrString=attrString.split(":");
-						splittedKey=cssReader.getTrimStr(splittedAttrString[0]);
-						splittedValue=cssReader.getTrimStr(splittedAttrString[1]);						
-						
-						if (splittedKey.length>0 && splittedValue.length>0)
-							reader.attrIns.add(attrContainerLength,splittedKey,splittedValue);
-					}
-				}
+				classNames=matches[1];
+				classAttr=matches[2];
 
-				if (classAttrSize>0)
+				if (classAttr && classAttr.length>0)
 				{
-					classParentFilter=classNames.indexOf(",")!=-1 ? classNames.split(",") : [classNames];
+					attrSplit=classAttr.split(";");
+					attrContainerLength=reader.attrIns.container.length;
 					
-					for (g=0,gl=classParentFilter.length;g<gl;g++)
+					for (var classAttrSize=0,cl=attrSplit.length;classAttrSize<cl;classAttrSize++)
 					{
-						classString=classParentFilter[g];
+						attrString=attrSplit[classAttrSize];
 						
-						if (classString.length>0)
+						if (cssReader.patternProperty.test(attrString))
 						{
-							trimmedClassString=cssReader.getTrimStr(classString);
-							try { var fullClassString=cssReader.getClassPath($(trimmedClassString));}
-							catch (e) { var fullClassString=false;}
+							splittedAttrString=attrString.split(":");
+							splittedKey=cssReader.getTrimStr(splittedAttrString[0]);
+							splittedValue=cssReader.getTrimStr(splittedAttrString[1]);						
+							
+							if (splittedKey.length>0 && splittedValue.length>0)
+								reader.attrIns.add(attrContainerLength,splittedKey,splittedValue);
+						}
+					}
 
-							if (typeof fullClassString == "string")
-								reader.classIns.add(trimmedClassString,cssReader.getClassHash(fullClassString),fullClassString,attrContainerLength,reader.refIns);
-							else if (fullClassString === false)
-								reader.classIns.add(trimmedClassString,cssReader.getClassHash(trimmedClassString),false,attrContainerLength,reader.refIns);
-							else
+					if (classAttrSize>0)
+					{
+						classParentFilter=classNames.indexOf(",")!=-1 ? classNames.split(",") : [classNames];
+						
+						for (g=0,gl=classParentFilter.length;g<gl;g++)
+						{
+							classString=classParentFilter[g];
+							
+							if (classString.length>0)
 							{
-								for (y=0,yl=fullClassString.length;y<yl;y++)
-									reader.classIns.add(trimmedClassString,cssReader.getClassHash(fullClassString[y]),fullClassString[y],attrContainerLength,reader.refIns);
+								trimmedClassString=cssReader.getTrimStr(classString);
+								try { var fullClassString=cssReader.getClassPath($(trimmedClassString));}
+								catch (e) { var fullClassString=false;}
+
+								if (typeof fullClassString == "string")
+									reader.classIns.add(trimmedClassString,cssReader.getClassHash(fullClassString),fullClassString,attrContainerLength,reader.refIns);
+								else if (fullClassString === false)
+									reader.classIns.add(trimmedClassString,cssReader.getClassHash(trimmedClassString),false,attrContainerLength,reader.refIns);
+								else
+								{
+									for (y=0,yl=fullClassString.length;y<yl;y++)
+										reader.classIns.add(trimmedClassString,cssReader.getClassHash(fullClassString[y]),fullClassString[y],attrContainerLength,reader.refIns);
+								}
 							}
 						}
 					}
