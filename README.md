@@ -265,6 +265,15 @@ But I the end both do the same. Here some performance testing (Just scraped thro
 - 1% faster than "2.6" with ~ 8.3 Ops/sec (IE8)
 - 0.31% faster than "2.6" with ~ 0.78 Ops/sec (IE7)
 
+### Testsnippet:
+
+	var newReader=new cssReader();
+	newReader.setCss(content);
+	newReader.fetchCss();
+	newReader.read();
+	
+	var result=newReader.search(function(c){});
+
 The test CSS had 42082 (34195 without whitespaces) signs on 1975 lines. 
 
 Comment: The version 2.3 of the cssReader is ~ 88% slower than "2.6 less".
