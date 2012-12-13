@@ -6,7 +6,7 @@
  * - Reading a CSS File.
  */
 var cssReaderLess = function (options){
-  var reader = this;
+	var reader = this;
 	var generic = {
 		targetUrl	: "",
 		plainCss	: "",
@@ -287,6 +287,7 @@ cssReaderLess.compiledInstance=function(){
 							classIns: c[g],
 							propIns: ac
 						};
+						last=c[g];
 					}
 				}
 			}
