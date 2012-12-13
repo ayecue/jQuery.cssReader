@@ -6,6 +6,14 @@ Language: Javascript
 Framework: jQuery
 
 
+### Content
+* Short Description
+* Advanced Description
+* API
+* First Steps
+* "2.6" vs "2.6 less"
+
+
 Short Description:
 ================
 With this plugin you can read CSS files. It will also read the parts in the CSS file which your normal browser won't read.
