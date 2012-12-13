@@ -249,20 +249,22 @@ But I the end both do the same. Here some performance testing (Just scraped thro
 
 ### 2.6
 - 4% slower than "2.6 less" with ~ 17 Ops/sec (Firefox)
-- 3% slower than "2.6 less" with ~ 20.6 Ops/sec (Chrome)
+- 3% slower than "2.6 less" with ~ 23.8 Ops/sec (Chrome)
 - 3% slower than "2.6 less" with ~ 14.7 Ops/sec (Safari)
-- 1% slower than "2.6 less" with ~ 15.5 Ops/sec (Opera)
+- 1% slower than "2.6 less" with ~ 16 Ops/sec (Opera)
 - 1% slower than "2.6 less" with ~ 16.2 Ops/sec (IE9)
 - 1% slower than "2.6 less" with ~ 8.2 Ops/sec (IE8)
 - 0.31% slower than "2.6 less" with ~ 0.77 Ops/sec (IE7)
 
 ### 2.6 less
 - 4% faster than "2.6" with ~ 17.5 Ops/sec (Firefox)
-- 3% faster than "2.6" with ~ 21.3 Ops/sec (Chrome)
+- 3% faster than "2.6" with ~ 24.1 Ops/sec (Chrome)
 - 3% faster than "2.6" with ~ 15.5 Ops/sec (Safari)
-- 1% faster than "2.6" with ~ 15.7 Ops/sec (Opera)
+- 1% faster than "2.6" with ~ 16.2 Ops/sec (Opera)
 - 1% faster than "2.6" with ~ 16.5 Ops/sec (IE9)
 - 1% faster than "2.6" with ~ 8.3 Ops/sec (IE8)
 - 0.31% faster than "2.6" with ~ 0.78 Ops/sec (IE7)
 
 The test CSS had 42082 (34195 without whitespaces) signs on 1975 lines. 
+
+Comment: The version 2.3 of the cssReader is ~ 88% slower than "2.6 less".
