@@ -78,7 +78,7 @@ var cssReader = function (options){
 				{
 					attrString=attrSplit[classAttrSize];
 					
-					if (attrString.length>0)
+					if (cssReader.patternProperty.test(attrString))
 					{
 						splittedAttrString=attrString.split(":");
 						splittedKey=cssReader.getTrimStr(splittedAttrString[0]);
@@ -175,6 +175,7 @@ var cssReader = function (options){
 };
 cssReader.patternFetch=new RegExp("([^}{]+{[^}{]*})","g");
 cssReader.patternFetchFilter={};
+cssReader.patternProperty=new RegExp("\\w+","");
 cssReader.patternRead=new RegExp("([^}{]+){((?:[^:]+:[^;]+;[\\s]*)+?)}","");
 cssReader.patternReadFilter={};
 cssReader.classInstance=function (){
