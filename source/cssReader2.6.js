@@ -1,6 +1,6 @@
 /*
  * Plugin: cssReader
- * Version: 2.6
+ * Version: 2.6a
  *
  * Beschreibung:
  * - Reading a CSS File.
@@ -322,34 +322,53 @@ cssReader.getClassHash = function(classString)
 
 	return "md"+hash.toString();
 };
-cssReader.getClassPath=function (element)
+cssReader.getSelectors=function(element)
+{   
+	if (x=element.localName)
+		return x+((i=element.id).length>0 ? "#"+i: "")+((c=element.className).length>0 ? "."+c.replace(cssReader.getClassPath.pattern,".") : "");
+		
+	return false;
+};
+cssReader.getClassPathEx=function(element)
 {
-	if (!element[0]) return false;
+	if (!element) return false;
 
-	allClassPath=[];
-	for (i=0,il=element.length;i<il;i++)
+	if (!("cssReader_PathEx" in element))
 	{
-		current=element.eq(i);
-		parents=current.parents("*");
-		classPath="";
+		var parent=element.parentNode,path='',selectors;
 		
-		for (j=0,jl=parents.length;j<jl;j++)
+		if ("cssReader_PathEx" in parent)
+			return element.cssReader_PathEx=parent.cssReader_PathEx+'>'+cssReader.getSelectors(element);
+
+		while (selectors=cssReader.getSelectors(parent))
 		{
-			classString	=(className=parents[j].className) 		? "."+className.replace(cssReader.getClassPath.pattern,".") : "";
-			idString	=(idName=parents[j].getAttribute("id")) ? "#"+idName.replace(cssReader.getClassPath.pattern,"#") : "";
+			if ("cssReader_PathEx" in parent)
+			{
+				path=parent.cssReader_PathEx+'>'+path;
+				break
+			}
 			
-			classPath=parents[j].tagName.toLowerCase()+idString+classString+" "+classPath;
+			path=selectors+'>'+path;
+			parent = parent.parentNode;
 		}
-		
-		allClassPath.push(
-							classPath.replace(cssReader.getClassPath.pattern," > ")
-							+ element[i].tagName.toLowerCase()
-							+ ((className=element[i].className) 		? "."+className.replace(cssReader.getClassPath.pattern,".") : "")
-							+ ((idName=element[i].getAttribute("id")) 	? "#"+idName.replace(cssReader.getClassPath.pattern,"#") : "")
-		);
+
+		return element.cssReader_PathEx=path+cssReader.getSelectors(element);
+	}
+
+	return element.cssReader_PathEx;
+};
+cssReader.getClassPath=function(element)
+{
+	if ((vl=element.length)>1)
+	{
+		stack=[];
+		for (v=0;v<vl;v++)
+			stack.push(cssReader.getClassPathEx(element[v]));
+
+		return stack;
 	}
 	
-	return allClassPath.length>0 ? allClassPath : false;
+	return cssReader.getClassPathEx(element[0]);
 };
 cssReader.getClassPath.pattern=new RegExp("\\s","g");
 cssReader.getClassPriority=function (className)
