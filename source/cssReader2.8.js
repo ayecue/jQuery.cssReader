@@ -252,7 +252,7 @@ var cssReader = function (options){
 				
 					if (searchStr ? searchStr in cc : true)
 						callback.call(this,cc);
-					else if (cssReader.attrInstance.debugPrefixString+searchStr in cc)
+					else if ("db_"+searchStr in cc)
 						callback.call(this,cc);
 				}
 			}
