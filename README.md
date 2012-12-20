@@ -1,6 +1,6 @@
 # cssReader (jQuery Plugin)
 * Author: ayecue
-* Version: 2.6a & 2.6a less
+* Version: 2.8
 * Language: Javascript
 * Framework: jQuery
 
