@@ -11,7 +11,7 @@
 * API (<a href="#api">shortcut</a>)
 * First Steps (<a href="#first-steps">shortcut</a>)
 * "2.6" vs "2.6 less" (deprecated) (<a href="#26-vs-26-less">shortcut</a>)
-* <a href="http://jsperf.com/cssreaderversiontest/4">Performance Test via jsperf</a>
+* <a href="http://jsperf.com/cssreaderversiontest/6">Performance Test via jsperf</a>
 
 
 ## Short Description:
