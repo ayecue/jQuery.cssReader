@@ -158,55 +158,51 @@ var cssReader = function (options){
 				((cmatches=cssReader.patternClasses.exec(currentCssString)) && 
 				(pmatches=cssReader.patternProperties.exec(currentCssString))))
 			{
-			
-				if (pmatches[0].length>0)
-				{
-					var attrSplit=pmatches[0].split(";"),
-						attrContainerLength=this.attrIns.container.length,
-						classAttrSize=attrSplit.length;
-						
-					while (--classAttrSize>=0)
-					{
-						var attrString=attrSplit[classAttrSize];
-						
-						if (cssReader.patternProperty.test(attrString))
-						{
-							var splittedAttrString=attrString.split(":"),
-								splittedKey=splittedAttrString[0].trimBoth(),
-								splittedValue=splittedAttrString[1].trimBoth();						
-							
-							if (splittedKey.length>0 && splittedValue.length>0)
-								this.attrIns.add(attrContainerLength,splittedKey,splittedValue);
-						}
-					}
+				var attrSplit=pmatches[0].split(";"),
+					attrContainerLength=this.attrIns.container.length,
+					classAttrSize=attrSplit.length;
 					
-					var classParentFilter=cmatches[0].split(","),
-						g=classParentFilter.length;
-						
-					while (--g>=0)
+				while (--classAttrSize>=0)
+				{
+					var attrString=attrSplit[classAttrSize];
+					
+					if (cssReader.patternProperty.test(attrString))
 					{
-						var classString=classParentFilter[g];
+						var splittedAttrString=attrString.split(":"),
+							splittedKey=splittedAttrString[0].trimBoth(),
+							splittedValue=splittedAttrString[1].trimBoth();						
 						
-						if (classString.length>0)
-						{
-							var trimmedClass=classString.trimBoth(),
-								currentElement=$(trimmedClass),
-								fullPath=currentElement ? currentElement.getPath() : false;
+						if (splittedKey.length>0 && splittedValue.length>0)
+							this.attrIns.add(attrContainerLength,splittedKey,splittedValue);
+					}
+				}
+				
+				var classParentFilter=cmatches[0].split(","),
+					g=classParentFilter.length;
+					
+				while (--g>=0)
+				{
+					var classString=classParentFilter[g];
+					
+					if (classString.length>0)
+					{
+						var trimmedClass=classString.trimBoth(),
+							currentElement=$(trimmedClass),
+							fullPath=currentElement ? currentElement.getPath() : false;
 
-							if (fullPath === false)
-								this.classIns.add(trimmedClass,trimmedClass.getStringHash(),false,attrContainerLength,this.refIns);
-							else
+						if (fullPath === false)
+							this.classIns.add(trimmedClass,trimmedClass.getStringHash(),false,attrContainerLength,this.refIns);
+						else
+						{
+							if (currentElement.length>1)
 							{
-								if (currentElement.length>1)
-								{
-									var y=currentElement.length;
-									while (--y>=0)
-										this.classIns.add(trimmedClass,fullPath[y].getStringHash(),fullPath[y],attrContainerLength,this.refIns);
-								}
-								else
-									this.classIns.add(trimmedClass,fullPath.getStringHash(),fullPath,attrContainerLength,this.refIns);
-							}						
-						}
+								var y=currentElement.length;
+								while (--y>=0)
+									this.classIns.add(trimmedClass,fullPath[y].getStringHash(),fullPath[y],attrContainerLength,this.refIns);
+							}
+							else
+								this.classIns.add(trimmedClass,fullPath.getStringHash(),fullPath,attrContainerLength,this.refIns);
+						}						
 					}
 				}
 			}
