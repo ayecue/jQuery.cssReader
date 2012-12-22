@@ -1,6 +1,6 @@
 # cssReader (jQuery Plugin)
 * Author: ayecue
-* Version: 2.8
+* Version: 2.9
 * Language: Javascript
 * Framework: jQuery
 
@@ -10,7 +10,8 @@
 * Advanced Description (<a href="#advanced-description">shortcut</a>)
 * API (<a href="#api">shortcut</a>)
 * First Steps (<a href="#first-steps">shortcut</a>)
-* "2.6" vs "2.6 less" (<a href="#26-vs-26-less">shortcut</a>)
+* "2.6" vs "2.6 less" (deprecated) (<a href="#26-vs-26-less">shortcut</a>)
+* <a href="http://jsperf.com/cssreaderversiontest/4">Performance Test via jsperf</a>
 
 
 ## Short Description:
@@ -70,27 +71,11 @@ There are much more posibilities but that's for now.
 		-> returns:
 			null
 			
-	@fetchCss
-		-> description:
-			Convert CSS content to an array where every class is one part.
-		-> parameter:
-			none
-		-> returns:
-			null
-			
-	@fetchCssFilter
-		-> description:
-			Convert CSS content with a filter to an array where every class is one part.
-		-> parameter:
-			string|array : Filter.
-		-> returns:
-			null
-			
 	@get
 		-> description:
 			Send AJAX request to get your file. When it's done the CSS will get fetched automaticly. You can add a filter.
 		-> parameter:
-			string|array : Filter.
+			string|array : Filter (optional)
 		-> returns:
 			null
 			
@@ -98,15 +83,7 @@ There are much more posibilities but that's for now.
 		-> description:
 			Read fetched CSS array. You can add your own fetched CSS array.
 		-> parameter:
-			array : Fetched CSS array.
-		-> returns:
-			true
-			
-	@readFilter
-		-> description:
-			Read fetched CSS array with a filter.
-		-> parameter:
-			string|array : Filter.
+			array : CSS File (optional)
 		-> returns:
 			true
 			
@@ -124,69 +101,84 @@ There are much more posibilities but that's for now.
 			Will get and read a CSS file automaticly.
 		-> parameter:
 			function : Callback.
+			filter: Filter String (optional)
 		-> returns:
-			null
+			null	
 			
-	@scrapeFilter
-		-> description:
-			Will get and read a CSS file automaticly with filter.
-		-> parameter:
-			function : Callback.
-			string|array : Filter.
-			boolean : Should get use the filter?
-			boolean : Should read use the filter?
-		-> returns:
-			null			
 			
-	@cssReader (static methods)
+	@cssReader (static)
 	================
-	@getTrimStr
+	@getIndex
+		-> description:
+			Get/Create an unique DOMIndex
+		-> parameter:
+			element: Your element.
+		-> returns:
+			integer	
+	
+	@nodeIndexOf
+		-> description:
+			Get the childNode index of an element
+		-> parameter:
+			element: Your element.
+		-> returns:
+			integer	
+	
+	@getSelectors
+		-> description:
+			Get all classes,ids and tags from an element and put them to a selector string
+		-> parameter:
+			element: Your element.
+		-> returns:
+			string
+	
+	@getPathEx
+		-> description:
+			Get the full path of a single element
+		-> parameter:
+			element: Your element.
+		-> returns:
+			array: path stack
+	
+	
+	@cssReader (prototypes)
+	================
+	string@trimBoth
 		-> description:
 			Trim string.
-		-> parameter:
-			string : String to be trimmed.
 		-> returns:
 			string: Trimmed String
 			
-	@getCompressedCss
+	string@compressCss
 		-> description:
 			Compress CSS content.
-		-> parameter:
-			string : CSS content.
 		-> returns:
 			string: Compressed CSS content.
 			
-	@getClassHash
+	string/array@getStringHash
 		-> description:
-			Get hash of string.
-		-> parameter:
-			string : String.
+			Get hash of string/array.
 		-> returns:
 			string: Hash.
 			
-	@getClassPath
-		-> description:
-			Get the full path of a jQuery element.
-		-> parameter:
-			object : jQuery element.
-		-> returns:
-			string: Full path.
-			
-	@getClassPriority
+	string@getPriority
 		-> description:
 			Rate the priority of a class.
-		-> parameter:
-			string : Class selector string.
 		-> returns:
 			integer: Priority.
 			
-	@isAttrImportant
+	string/array@isImportant
 		-> description:
 			Check if a property is important.
-		-> parameter:
-			string : Property value.
 		-> returns:
 			boolean: Is important.
+			
+	jQueryObject@getPath
+		-> description:
+			Get the full path of an element.
+		-> returns:
+			array: Stack with all elements.
+			
 			
 	@cssReader (featuring classes)
 	================
@@ -210,9 +202,7 @@ Now i'll describe what's done in the "test1.html". This little test shows how th
 				
 	//Here we set the CSS content from the style element in the head.
 	newReader.setCss($("head style").html());
-	//Now Im converting the whole CSS content to an array.
-	newReader.fetchCss();
-	//After converting I read the whole array without a filter.
+	//After compressing etc. we'll read the CSS content.
 	newReader.read();
 	
 	//After everything is setup I can start a search. This search I do without any search string.
@@ -231,7 +221,7 @@ Now i'll describe what's done in the "test1.html". This little test shows how th
 
 I'll add some more examples in the future.
 
-## "2.6" vs "2.6 less":
+## "2.6" vs "2.6 less" (deprecated):
 ### (<a href="#cssreader-jquery-plugin">up</a> | <a href="#first-steps">previous</a>)
 There are small differences:
 - "2.6 less" need less cache
