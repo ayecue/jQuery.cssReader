@@ -152,11 +152,10 @@ var cssReader = function (options){
 		},
 		read:function (cssString)
 		{
-			var currentCssString=cssString ? cssString : this.d.plainCss,reading,cmatches,pmatches;
+			var currentCssString=cssString ? cssString : this.d.plainCss,cmatches,pmatches;
 
-			while(reading=
-				((cmatches=cssReader.patternClasses.exec(currentCssString)) && 
-				(pmatches=cssReader.patternProperties.exec(currentCssString))))
+			while((cmatches=cssReader.patternClasses.exec(currentCssString)) && 
+				(pmatches=cssReader.patternProperties.exec(currentCssString)))
 			{
 				var attrSplit=pmatches[0].split(";"),
 					attrContainerLength=this.attrIns.container.length,
