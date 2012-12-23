@@ -208,14 +208,23 @@ Now i'll describe what's done in the "test1.html". This little test shows how th
 	//After everything is setup I can start a search. This search I do without any search string.
 	//That's because I want to get everything.
 	var result=newReader.search(function(c){
-		//In the callback I get all compiled classes.
-		for (property in c)
-		{
-			//The property is always the key of every object inside a compiled stack.
-			//With the object property ".attrPath" I get the current element and
-			//with the property ".attrValue" I get the value of the current property.
-			//So this call do nothing else than giving every element their class values.
-			$(c[property].attrPath).css(property,c[property].attrValue);
+		//Creating a temp variable
+		var key;
+	
+		//In the callback I get all compiled classes. Since version 2.6 I added the key stack.
+		//With this stack you are able to loop faster trough all compiled classes.
+		for(var i=0,length=c.keys.length;i<length;i++)
+		{			
+			//In this example the temp variable get the current active key. With this key
+			//I can get all important informations about the property.
+			key=c.keys[i];
+			
+			//With the property "path" I get the complete path of the current element.
+			//Since the current element got the position zero in the path stack Im using
+			//the index zero. With the property "value" I get the current value/values of the property.
+			//Hint: The property "value" can have more than one results. As soon you have a class containing
+			//multiple background declarations it will create a stack.
+			$(c[key].path[0]).css(key,c[key].value);
 		}
 	});
 
