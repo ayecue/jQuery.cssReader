@@ -15,6 +15,9 @@ var cssReader = function (options){
 	cssReader.extend(this,{
 		d:$.extend(generic,options),
 		patternFilter:{},
+		patternClasses:/[^{}]+(?={)/g,
+		patternProperties:/[^{}]+(?=})/g,
+		patternProperty:/\w+/,
 		classIns:{
 			container:{keys:[]},
 			add:function(name,hash,path,properties,refIns)
@@ -154,8 +157,8 @@ var cssReader = function (options){
 		{
 			var currentCssString=cssString ? cssString : this.d.plainCss,cmatches,pmatches;
 
-			while((cmatches=cssReader.patternClasses.exec(currentCssString)) && 
-				(pmatches=cssReader.patternProperties.exec(currentCssString)))
+			while((cmatches=this.patternClasses.exec(currentCssString)) && 
+				(pmatches=this.patternProperties.exec(currentCssString)))
 			{
 				var attrSplit=pmatches[0].split(";"),
 					attrContainerLength=this.attrIns.container.length,
@@ -165,7 +168,7 @@ var cssReader = function (options){
 				{
 					var attrString=attrSplit[classAttrSize];
 					
-					if (cssReader.patternProperty.test(attrString))
+					if (this.patternProperty.test(attrString))
 					{
 						var splittedAttrString=attrString.split(":"),
 							splittedKey=splittedAttrString[0].trimBoth(),
@@ -241,9 +244,6 @@ cssReader.extend=function(t,c){
 		t[func]=c[func];
 };
 cssReader.extend(cssReader,{
-	patternClasses:/[^{}]+(?={)/g,
-	patternProperties:/[^{}]+(?=})/g,
-	patternProperty:/\w+/,
 	debugPrefixFilter:function(str){
 		return str.replace(/^db_/,"");
 	},
