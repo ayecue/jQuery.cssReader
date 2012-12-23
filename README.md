@@ -10,6 +10,7 @@
 * Advanced Description (<a href="#advanced-description">shortcut</a>)
 * API (<a href="#api">shortcut</a>)
 * First Steps (<a href="#first-steps">shortcut</a>)
+* "2.9" vs "2.9 direct" & "2.8" vs "2.8 direct" (<a href="#29-vs-29-direct--28-vs-28-direct">shortcut</a>)
 * "2.6" vs "2.6 less" (deprecated) (<a href="#26-vs-26-less">shortcut</a>)
 * <a href="http://jsperf.com/cssreaderversiontest/6">Performance Test via jsperf</a>
 
@@ -193,7 +194,7 @@ There are much more posibilities but that's for now.
 		
 	
 ## First Steps:
-### (<a href="#cssreader-jquery-plugin">up</a> | <a href="#api">previous</a> | <a href="#26-vs-26-less">next</a>)
+### (<a href="#cssreader-jquery-plugin">up</a> | <a href="#api">previous</a> | <a href="#29-vs-29-direct--28-vs-28-direct">next</a>)
 Now i'll describe what's done in the "test1.html". This little test shows how the "cssReader" reads CSS, compiling everything and declaring elements.
 
 ### Code:
@@ -230,8 +231,17 @@ Now i'll describe what's done in the "test1.html". This little test shows how th
 
 I'll add some more examples in the future.
 
+
+## "2.9" vs "2.9 direct" & "2.8" vs "2.8 direct":
+### (<a href="#first-steps">up</a> | <a href="#first-steps">previous</a> | <a href="#26-vs-26-less">next</a>)
+
+The difference between those two versions is that "2.9 direct" use direct calls instead of prototypes. So there will be a small speed difference to the normal "2.9" version.
+
+And why there is still version "2.8"? Since it's using an other way reading the CSS file. Somehow the Internet Explorer will be faster with 2.8! But remember the test on JSPerf is not really reliable since it won't do the compile part. Which needs most of the performance. I suggest using "2.9" if you want to read a CSS File once. If you want to read a CSS File more than once just use "2.8". I'm also suggesting to use the "direct" versions since those are faster.
+
+
 ## "2.6" vs "2.6 less" (deprecated):
-### (<a href="#cssreader-jquery-plugin">up</a> | <a href="#first-steps">previous</a>)
+### (<a href="#cssreader-jquery-plugin">up</a> | <a href="#29-vs-29-direct--28-vs-28-direct">previous</a>)
 There are small differences:
 - "2.6 less" need less cache
 - "2.6 less" loops are abit more difficult
