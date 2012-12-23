@@ -11,7 +11,7 @@
 * API (<a href="#api">shortcut</a>)
 * First Steps (<a href="#first-steps">shortcut</a>)
 * "2.9" vs "2.9 direct" & "2.8" vs "2.8 direct" (<a href="#29-vs-29-direct--28-vs-28-direct">shortcut</a>)
-* "2.6" vs "2.6 less" (deprecated) (<a href="#26-vs-26-less">shortcut</a>)
+* "2.6" vs "2.6 less" (deprecated) (<a href="#26-vs-26-less-deprecated">shortcut</a>)
 * <a href="http://jsperf.com/cssreaderversiontest/6">Performance Test via jsperf</a>
 
 
@@ -233,7 +233,7 @@ I'll add some more examples in the future.
 
 
 ## "2.9" vs "2.9 direct" & "2.8" vs "2.8 direct":
-### (<a href="#first-steps">up</a> | <a href="#first-steps">previous</a> | <a href="#26-vs-26-less">next</a>)
+### (<a href="#first-steps">up</a> | <a href="#first-steps">previous</a> | <a href="#26-vs-26-less-deprecated">next</a>)
 
 The difference between those two versions is that "2.9 direct" use direct calls instead of prototypes. So there will be a small speed difference to the normal "2.9" version.
 
