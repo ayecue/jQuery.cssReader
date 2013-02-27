@@ -121,7 +121,7 @@
 						
 						while (this.selector.get(current))
 						{	
-							this.nodeIndexOf(current);
+							this.nodeIndex.get(current);
 							stack.push(current);
 							current=current.parentNode;
 							
@@ -148,23 +148,25 @@
 						return q.selectors || this.create(q);
 					}
 				},
-				nodeIndexOf: function (q)
-				{	
-					if (q.childNodesIndex) return q.childNodesIndex;
-					
-					var e=q.previousSibling,
-						index=0;
+				nodeIndex : {
+					create : function (q) {
+						var prev=q.previousSibling,
+							index=0;
+							
+						while(prev)
+						{   
+							if (prev.childNodesIndex)
+								return q.childNodesIndex=prev.childNodesIndex+1;
+							
+							prev=prev.previousSibling;
+							index++;
+						}
 						
-					while(e)
-					{   
-						if (e.childNodesIndex)
-							return q.childNodesIndex=e.childNodesIndex+1;
-						
-						index++;
-						e=e.previousSibling;
+						return q.childNodesIndex=index;
+					},
+					get : function(q){
+						return q.childNodesIndex || this.create(q);
 					}
-					
-					return q.childNodesIndex=index;    
 				}
 			},
 			/*
