@@ -199,8 +199,8 @@
 				 */
 				filter : {
 					handler : {
-						array : function () {return new RegExp('((?:'+settings.filter.join('|')+')[^:]*):([^;]+);','g');},
-						string : function () {return new RegExp('((?:'+settings.filter+')[^:]*):([^;]+);','g');}
+						array : function () {return new RegExp('([^;]*(?:'+settings.filter.join('|')+')[^:]*):([^;]+);','g');},
+						string : function () {return new RegExp('([^;]*(?:'+settings.filter+')[^:]*):([^;]+);','g');}
 					},
 					set : function(filter){settings.filter=filter;},
 					get : function(){
