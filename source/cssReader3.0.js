@@ -37,6 +37,21 @@
 				}
 			},
 			/*
+			 * TYPE BLOCK
+			 */
+			type : {
+				handler : {
+					object : function (object) {
+						return object instanceof Array ? 'array' : 'object';
+					}
+				},
+				get : function (object) {
+					var type=typeof object;
+					
+					return this.handler[type] ? this.handler[type](object) : type;
+				}
+			},
+			/*
 			 * PRIORITY BLOCK
 			 */
 			priority : {
@@ -58,7 +73,7 @@
 			 */
 			hash : {
 				handler: {
-					'string' : function(q){
+					string : function(q){
 						var hash=0,
 							i=q.length;
 							
@@ -70,13 +85,13 @@
 						
 						return "d:"+hash.toString();
 					},
-					'object' : function (q){
+					array : function (q){
 						return "e:"+staticClass.DOMIndex.get(q[0]);
 					}
 				},
 				get: function (q)
 				{
-					var type=typeof q;
+					var type=staticClass.type.get(q);
 
 					return this.handler[type] ? this.handler[type](q) : false;
 				}
@@ -182,12 +197,12 @@
 				 */
 				filter : {
 					handler : {
-						'object' : function () {return new RegExp('((?:'+settings.filter.join('|')+')[^:]*):([^;]+);','g');},
-						'string' : function () {return new RegExp('((?:'+settings.filter+')[^:]*):([^;]+);','g');}
+						array : function () {return new RegExp('((?:'+settings.filter.join('|')+')[^:]*):([^;]+);','g');},
+						string : function () {return new RegExp('((?:'+settings.filter+')[^:]*):([^;]+);','g');}
 					},
 					set : function(filter){settings.filter=filter;},
 					get : function(){
-						var type = typeof settings.filter;
+						var type = staticClass.type.get(settings.filter);
 						
 						return this.handler[type] ? this.handler[type]() : configuration.reader.property;
 					}
@@ -298,7 +313,7 @@
 				 */
 				read : {
 					handler : {
-						'string' : function(options){
+						string : function(options){
 							if (options.stylesheet.length>0)
 							{
 								var matchedClass;
@@ -316,7 +331,7 @@
 							
 							return false;
 						},
-						'array' : function(options){
+						array : function(options){
 							var fetchedStringLength=options.stylesheet.length;
 							
 							if (fetchedStringLenght>0)
@@ -338,7 +353,7 @@
 							
 							return false;
 						},
-						'object' : function(options){
+						object : function(options){
 							var styleSheetListLength=options.stylesheet.length;
 							
 							if (styleSheetListLength>0)
@@ -387,7 +402,7 @@
 					},
 					exec : function(parent){
 						var stylesheet	=parent.CSSStyleSheet.get(),
-							type		=typeof stylesheet;
+							type		=staticClass.type.get(stylesheet);
 					
 						return this.handler[type] ? this.handler[type]({
 							stylesheet 		: stylesheet,
@@ -419,11 +434,11 @@
 		 */
 		fetchFilter : {
 			handler : {
-				'object' : function (filter) {return new RegExp('([^}{]+){(?:[^}{]*(?:'+filter.join('|')+')[^}{]*)}','g');},
-				'string' : function (filter) {return new RegExp('([^}{]+){(?:[^}{]*(?:'+filter+')[^}{]*)}','g');}
+				array : function (filter) {return new RegExp('([^}{]+){(?:[^}{]*(?:'+filter.join('|')+')[^}{]*)}','g');},
+				string : function (filter) {return new RegExp('([^}{]+){(?:[^}{]*(?:'+filter+')[^}{]*)}','g');}
 			},
 			get : function(filter){
-				var handler = typeof filter;
+				var handler = staticClass.type.get(filter);
 			
 				return this.handler[handler] ? this.handler[handler](filter) : configuration.reader.style;
 			}
