@@ -22,7 +22,9 @@
 				priorityTag:		/[^\s]+(?=#|\.)?/g,
 				trim:				/^\s+|\s+$/g,
 				important: 			/!important$/gi,
-				compress: 			/\/\*[\s\S]+?\*\/|[^\S][\s\n\r]*[^\S]|[^{}]+{[^\S{}]*?}/g
+				removeComments:		/\/\*[\s\S]+?\*\//g,
+				removeWhiteSpaces:	/[^\S][\s\n\r]*[^\S]/g,
+				removeEmpty:		/[^{}]+{[^\S{}]*?}/g
 			}
 		},
 		staticClass = {
@@ -180,10 +182,37 @@
 				trimBoth: function (s)
 				{
 					return s.replace(configuration.staticClass.trim,"")
-				},
-				compressText: function (s)
+				}
+			},
+			/*
+			 * TEXT BLOCK
+			 */
+			remove : {
+				create: function (s,filter) 
 				{
-					return s.replace(configuration.staticClass.compress,"");
+					var length=filter.length;
+				
+					while (length--)
+						if (this[filter[length]])
+							s=this[filter[length]](s);
+
+					return s;
+				},
+				get: function (s,filter)
+				{			
+					return filter ? this.create(s,filter) : s;
+				},
+				comments: function (s)
+				{
+					return s.replace(configuration.staticClass.removeComments,"");
+				},
+				whitespaces: function (s)
+				{
+					return s.replace(configuration.staticClass.removeWhiteSpaces,"");
+				},
+				empty: function (s)
+				{
+					return s.replace(configuration.staticClass.removeEmpty,"");
 				}
 			}
 		},
@@ -451,10 +480,11 @@
 	 * PUBLIC API
 	 */
 	String.prototype.readStylesheet = function(options){
-		var styleReader = new reader({
-			stylesheet:options.fetch ? staticClass.text.compressText(this).match(reader.fetchFilter.get()) : staticClass.text.compressText(this),
-			filter:options.filter || false
-		});
+		var rules = staticClass.remove.get(this,options.shrink || ['comments']),
+			styleReader = new reader({
+				stylesheet:options.fetch ? rules.match(reader.fetchFilter.get()) : rules,
+				filter:options.filter || false
+			});
 		
 		styleReader.scrape(function(s,css){
 			options.callback(css);
@@ -463,10 +493,11 @@
 		return styleReader;
 	};
 	$.readStylesheet = function (options){
-		var styleReader = new reader({
-			stylesheet:options.stylesheet.rules,
-			filter:options.filter || false
-		});
+		var rules = options.stylesheet.rules || staticClass.remove.get(options.stylesheet,options.shrink || ['comments'])
+			styleReader = new reader({
+				stylesheet:rules,
+				filter:options.filter || false
+			});
 		
 		styleReader.scrape(function(s,css){
 			options.callback(css);
