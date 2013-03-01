@@ -493,7 +493,7 @@
 		return styleReader;
 	};
 	$.readStylesheet = function (options){
-		var rules = options.stylesheet.rules || staticClass.remove.get(options.stylesheet,options.shrink || ['comments'])
+		var rules = options.stylesheet.rules || staticClass.remove.get(options.stylesheet,options.shrink || ['comments']),
 			styleReader = new reader({
 				stylesheet:rules,
 				filter:options.filter || false
