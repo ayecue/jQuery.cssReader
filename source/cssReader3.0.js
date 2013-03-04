@@ -61,9 +61,11 @@
 				create: function (s) {
 					var matches;
 				
-					return (this.stack[s]=((matches=s.match(configuration.staticClass.priorityId)) ? matches.length*100 : 0)
+					return (this.stack[s]=
+											((matches=s.match(configuration.staticClass.priorityId)) ? matches.length*100 : 0)
 											+((matches=s.match(configuration.staticClass.priorityClass)) ? matches.length*10 : 0)
-											+((matches=s.replace(configuration.staticClass.priorityTagReplace,"").match(configuration.staticClass.priorityTag)) ? matches.length*1 : 0));
+											+((matches=s.replace(configuration.staticClass.priorityTagReplace,"").match(configuration.staticClass.priorityTag)) ? matches.length*1 : 0)
+					);
 				},
 				get: function (s)
 				{
@@ -85,10 +87,13 @@
 							hash = hash & hash;
 						}
 						
-						return "d:"+hash.toString();
+						return hash;
 					},
 					array : function (q){
-						return "e:"+staticClass.DOMIndex.get(q[0]);
+						return staticClass.DOMIndex.get(q[0]);
+					},
+					object : function (q){
+						return staticClass.DOMIndex.get(q);
 					}
 				},
 				get: function (q)
@@ -96,6 +101,48 @@
 					var type=staticClass.type.get(q);
 
 					return this.handler[type] ? this.handler[type](q) : false;
+				}
+			},
+			/*
+			 * SELECTOR BLOCK
+			 */
+			selector : {
+				create : function (q) {
+					var tagName=q.tagName,id,name;
+				
+					return tagName 
+							? (q.selectors=
+								(tagName)
+								+ ((id=q.id).length>0 			? '#'+id 														: '')
+								+ ((name=q.className).length>0 	? '.'+name.replace(configuration.staticClass.classSpaces,".") 	: '')
+							)
+							: false;
+				},
+				get : function (q) {
+					return q.selectors || this.create(q);
+				}
+			},
+			/*
+			 * NODES BLOCK
+			 */
+			nodeIndex : {
+				create : function (q) {
+					var prev=q.previousSibling,
+						index=0;
+						
+					while(prev)
+					{   
+						if (prev.childNodesIndex)
+							return q.childNodesIndex=prev.childNodesIndex+1;
+						
+						prev=prev.previousSibling;
+						index++;
+					}
+					
+					return q.childNodesIndex=index;
+				},
+				get : function(q){
+					return q.childNodesIndex || this.create(q);
 				}
 			},
 			/*
@@ -121,9 +168,8 @@
 					{
 						var current=q,stack=[];
 						
-						while (this.selector.get(current))
+						while (staticClass.selector.get(current))
 						{	
-							this.nodeIndex.get(current);
 							stack.push(current);
 							current=current.parentNode;
 							
@@ -135,40 +181,6 @@
 					}
 					
 					return q.pathStack;
-				},
-				selector : {
-					create : function (q) {
-						var tagName=q.tagName,id,name;
-					
-						return tagName 
-								? (tagName
-									+ ((id=q.id).length>0 			? '#'+id 														: '')
-									+ ((name=q.className).length>0 	? '.'+name.replace(configuration.staticClass.classSpaces,".") 	: ''))
-								: false;
-					},
-					get : function (q) {
-						return q.selectors || this.create(q);
-					}
-				},
-				nodeIndex : {
-					create : function (q) {
-						var prev=q.previousSibling,
-							index=0;
-							
-						while(prev)
-						{   
-							if (prev.childNodesIndex)
-								return q.childNodesIndex=prev.childNodesIndex+1;
-							
-							prev=prev.previousSibling;
-							index++;
-						}
-						
-						return q.childNodesIndex=index;
-					},
-					get : function(q){
-						return q.childNodesIndex || this.create(q);
-					}
 				}
 			},
 			/*
@@ -479,24 +491,11 @@
 	/*
 	 * PUBLIC API
 	 */
-	String.prototype.readStylesheet = function(options){
-		var rules = staticClass.remove.get(this,options.shrink || ['comments']),
-			styleReader = new reader({
-				stylesheet:options.fetch ? rules.match(reader.fetchFilter.get()) : rules,
-				filter:options.filter || false
-			});
-		
-		styleReader.scrape(function(s,css){
-			options.callback(css);
-		});
-		
-		return styleReader;
-	};
 	$.readStylesheet = function (options){
 		var rules = options.stylesheet.rules || staticClass.remove.get(options.stylesheet,options.shrink || ['comments']),
 			styleReader = new reader({
-				stylesheet:rules,
-				filter:options.filter || false
+				stylesheet: staticClass.type.get(rules)=='string' && options.fetch ? rules.match(reader.fetchFilter.get()) : rules,
+				filter: options.filter || false
 			});
 		
 		styleReader.scrape(function(s,css){
@@ -505,12 +504,10 @@
 		
 		return styleReader;
 	};
+	String.prototype.readStylesheet = function(options){
+		return $.readStylesheet($.extend(options,{stylesheet:this}));
+	};
 	$.readStylesheetAjax = function (options) {
-		return $.ajax({
-			url : options.url,
-			success : function (css){
-				css.readStylesheet(options);
-			}
-		});
+		return $.ajax({url : options.url,success : function (a){a.readStylesheet(options);}});
 	};
 })(jQuery);
